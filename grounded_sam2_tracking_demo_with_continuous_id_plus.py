@@ -14,6 +14,10 @@ from utils.mask_dictionary_model import MaskDictionaryModel, ObjectInfo
 import json
 import copy
 
+# Set the GPU device number (e.g., device_id = 0 for GPU 0)
+device_id = 1
+torch.cuda.set_device(device_id)
+
 # This demo shows the continuous object tracking plus reverse tracking with Grounding DINO and SAM 2
 """
 Step 1: Environment settings and model initialization
@@ -29,7 +33,7 @@ if torch.cuda.get_device_properties(0).major >= 8:
 # init sam image predictor and video predictor model
 sam2_checkpoint = "./checkpoints/sam2_hiera_large.pt"
 model_cfg = "sam2_hiera_l.yaml"
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = f"cuda:{device_id}" if torch.cuda.is_available() else "cpu"
 print("device", device)
 
 video_predictor = build_sam2_video_predictor(model_cfg, sam2_checkpoint)
